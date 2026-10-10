@@ -1,0 +1,346 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>README Badge Builder</title>
+    <meta
+      name="description"
+      content="Build shields.io README badges with a live preview, see them on GitHub light and dark, and copy the Markdown or HTML in one click."
+    />
+    <meta name="color-scheme" content="light dark" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <script>
+      // Apply the saved theme before first paint to avoid a flash.
+      try {
+        const theme = localStorage.getItem('rbb-theme')
+        if (theme === 'light' || theme === 'dark') document.documentElement.dataset.theme = theme
+      } catch {}
+    </script>
+  </head>
+  <body>
+    <a class="skip-link" href="#field-label">Skip to badge fields</a>
+
+    <header class="topbar">
+      <a class="wordmark" href="./" aria-label="README Badge Builder home">
+        <span class="wordmark__label">README</span><span class="wordmark__message">badge builder</span>
+      </a>
+
+      <div class="topbar__actions">
+        <a
+          class="topbar__link"
+          href="https://github.com/rahultapase/readme-badge-builder"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <span data-icon="github-logo"></span>
+          <span>Source</span>
+          <span class="visually-hidden">(opens in a new tab)</span>
+        </a>
+
+        <fieldset class="theme-switch">
+          <legend class="visually-hidden">Color theme</legend>
+          <label class="theme-switch__option" title="Match system">
+            <input class="visually-hidden" type="radio" name="theme" value="system" checked />
+            <span class="theme-switch__face"><span data-icon="monitor"></span><span class="visually-hidden">System</span></span>
+          </label>
+          <label class="theme-switch__option" title="Light">
+            <input class="visually-hidden" type="radio" name="theme" value="light" />
+            <span class="theme-switch__face"><span data-icon="sun"></span><span class="visually-hidden">Light</span></span>
+          </label>
+          <label class="theme-switch__option" title="Dark">
+            <input class="visually-hidden" type="radio" name="theme" value="dark" />
+            <span class="theme-switch__face"><span data-icon="moon"></span><span class="visually-hidden">Dark</span></span>
+          </label>
+        </fieldset>
+      </div>
+    </header>
+
+    <main class="workbench">
+      <section class="controls" aria-labelledby="controls-title">
+        <div class="strip" aria-hidden="true">
+          <img class="strip__img" data-preview alt="" />
+        </div>
+
+        <div class="controls__head">
+          <h1 id="controls-title" class="controls__title">Build a badge</h1>
+          <p class="controls__intro">
+            Fill in the fields or start from a preset, then copy the code into your README.
+          </p>
+        </div>
+
+        <div class="group" role="group" aria-labelledby="presets-title">
+          <h2 id="presets-title" class="group__title">Presets</h2>
+          <div class="presets" id="presets"></div>
+        </div>
+
+        <form id="badge-form" class="form" novalidate autocomplete="off">
+          <fieldset class="group">
+            <legend class="group__title">Text</legend>
+            <div class="row">
+              <div class="field">
+                <label class="field__label" for="field-label">Label</label>
+                <input
+                  class="input"
+                  id="field-label"
+                  name="label"
+                  maxlength="80"
+                  spellcheck="false"
+                  aria-describedby="help-label"
+                />
+                <p class="field__help" id="help-label">Left side. Leave empty for a one-part badge.</p>
+              </div>
+              <div class="field">
+                <label class="field__label" for="field-message">Message <span class="field__req">required</span></label>
+                <input
+                  class="input"
+                  id="field-message"
+                  name="message"
+                  maxlength="80"
+                  spellcheck="false"
+                  required
+                  aria-describedby="help-message error-message"
+                />
+                <p class="field__help" id="help-message">Right side, next to the color.</p>
+                <p class="field__error" id="error-message" data-error-for="message"></p>
+              </div>
+            </div>
+          </fieldset>
+
+          <fieldset class="group">
+            <legend class="group__title">Colors</legend>
+            <div class="row">
+              <div class="field">
+                <label class="field__label" for="field-color">Message color <span class="field__req">required</span></label>
+                <div class="color-field">
+                  <span class="swatch" data-swatch-for="color">
+                    <input class="swatch__picker" type="color" id="picker-color" aria-label="Pick message color" />
+                  </span>
+                  <input
+                    class="input"
+                    id="field-color"
+                    name="color"
+                    maxlength="40"
+                    spellcheck="false"
+                    required
+                    aria-describedby="help-color error-color"
+                  />
+                </div>
+                <p class="field__help" id="help-color">Hex, rgb(), hsl() or a name like brightgreen.</p>
+                <p class="field__error" id="error-color" data-error-for="color"></p>
+              </div>
+              <div class="field">
+                <label class="field__label" for="field-labelColor">Label color</label>
+                <div class="color-field">
+                  <span class="swatch" data-swatch-for="labelColor">
+                    <input class="swatch__picker" type="color" id="picker-labelColor" aria-label="Pick label color" />
+                  </span>
+                  <input
+                    class="input"
+                    id="field-labelColor"
+                    name="labelColor"
+                    maxlength="40"
+                    spellcheck="false"
+                    placeholder="555555"
+                    aria-describedby="help-labelColor error-labelColor"
+                  />
+                </div>
+                <p class="field__help" id="help-labelColor">Optional. Defaults to dark gray.</p>
+                <p class="field__error" id="error-labelColor" data-error-for="labelColor"></p>
+              </div>
+            </div>
+          </fieldset>
+
+          <fieldset class="group">
+            <legend class="group__title">Style</legend>
+            <div class="styles" id="styles"></div>
+          </fieldset>
+
+          <fieldset class="group">
+            <legend class="group__title">Logo and link</legend>
+            <div class="row">
+              <div class="field">
+                <label class="field__label" for="field-logo">Logo</label>
+                <input
+                  class="input"
+                  id="field-logo"
+                  name="logo"
+                  list="logo-suggestions"
+                  maxlength="60"
+                  spellcheck="false"
+                  autocapitalize="none"
+                  aria-describedby="help-logo error-logo"
+                />
+                <datalist id="logo-suggestions">
+                  <option value="github"></option>
+                  <option value="githubcopilot"></option>
+                  <option value="git"></option>
+                  <option value="javascript"></option>
+                  <option value="typescript"></option>
+                  <option value="python"></option>
+                  <option value="react"></option>
+                  <option value="nodedotjs"></option>
+                  <option value="vite"></option>
+                  <option value="rust"></option>
+                  <option value="go"></option>
+                  <option value="docker"></option>
+                  <option value="linux"></option>
+                  <option value="markdown"></option>
+                  <option value="npm"></option>
+                  <option value="opensourceinitiative"></option>
+                </datalist>
+                <p class="field__help" id="help-logo">
+                  A
+                  <a href="https://simpleicons.org/" target="_blank" rel="noopener noreferrer"
+                    >Simple Icons<span class="visually-hidden"> (opens in a new tab)</span></a
+                  >
+                  name, like python.
+                </p>
+                <p class="field__error" id="error-logo" data-error-for="logo"></p>
+              </div>
+              <div class="field">
+                <label class="field__label" for="field-logoColor">Logo color</label>
+                <div class="color-field">
+                  <span class="swatch" data-swatch-for="logoColor">
+                    <input class="swatch__picker" type="color" id="picker-logoColor" aria-label="Pick logo color" />
+                  </span>
+                  <input
+                    class="input"
+                    id="field-logoColor"
+                    name="logoColor"
+                    maxlength="40"
+                    spellcheck="false"
+                    placeholder="white"
+                    aria-describedby="help-logoColor error-logoColor"
+                  />
+                </div>
+                <p class="field__help" id="help-logoColor">Optional.</p>
+                <p class="field__error" id="error-logoColor" data-error-for="logoColor"></p>
+              </div>
+            </div>
+            <div class="field">
+              <label class="field__label" for="field-link">Link</label>
+              <input
+                class="input"
+                id="field-link"
+                name="link"
+                type="text"
+                inputmode="url"
+                maxlength="300"
+                spellcheck="false"
+                autocapitalize="none"
+                placeholder="LICENSE or https://…"
+                aria-describedby="help-link error-link"
+              />
+              <p class="field__help" id="help-link">Optional. Makes the badge clickable in Markdown and HTML.</p>
+              <p class="field__error" id="error-link" data-error-for="link"></p>
+            </div>
+          </fieldset>
+
+          <div class="form__footer">
+            <button class="btn btn--ghost" type="button" id="reset-button">
+              <span data-icon="arrow-counter-clockwise"></span>
+              Reset fields
+            </button>
+          </div>
+        </form>
+      </section>
+
+      <div class="proof">
+        <section class="loupe" aria-labelledby="loupe-title">
+          <h2 id="loupe-title" class="visually-hidden">Badge preview</h2>
+          <div class="loupe__mat is-loading" id="loupe-mat">
+            <div class="loupe__skeleton" aria-hidden="true"></div>
+            <img class="loupe__img" id="loupe-img" alt="" />
+            <div class="preview-status" id="preview-status" role="status"></div>
+          </div>
+          <div class="loupe__meta">
+            <span class="loupe__meta-label">Actual size</span>
+            <img class="loupe__actual" data-preview alt="" />
+            <span class="loupe__scale">Shown at 4×</span>
+          </div>
+        </section>
+
+        <section class="output" aria-labelledby="output-title">
+          <div class="output__bar">
+            <h2 id="output-title" class="section-title">Code</h2>
+            <fieldset class="segmented" id="format-switch">
+              <legend class="visually-hidden">Code format</legend>
+              <label class="segmented__option">
+                <input class="visually-hidden" type="radio" name="format" value="markdown" checked />
+                <span class="segmented__face">Markdown</span>
+              </label>
+              <label class="segmented__option">
+                <input class="visually-hidden" type="radio" name="format" value="html" />
+                <span class="segmented__face">HTML</span>
+              </label>
+              <label class="segmented__option">
+                <input class="visually-hidden" type="radio" name="format" value="url" />
+                <span class="segmented__face">URL</span>
+              </label>
+            </fieldset>
+          </div>
+
+          <pre class="output__code"><code id="output-code"></code></pre>
+
+          <p class="output__note" id="output-note" hidden>
+            <span data-icon="warning-circle"></span>
+            Showing the last valid badge until every field checks out.
+          </p>
+
+          <div class="output__actions">
+            <button class="btn btn--primary copy-btn" type="button" id="copy-button">
+              <span class="copy-btn__face copy-btn__face--idle">
+                <span data-icon="copy"></span>
+                <span id="copy-label">Copy Markdown</span>
+              </span>
+              <span class="copy-btn__face copy-btn__face--done" aria-hidden="true">
+                <span data-icon="check"></span>
+                Copied
+              </span>
+            </button>
+            <p class="copy-status" id="copy-status" role="status"></p>
+          </div>
+        </section>
+
+        <section class="mocks" aria-labelledby="mocks-title">
+          <h2 id="mocks-title" class="section-title">In a README</h2>
+          <div class="mocks__grid">
+            <figure class="mock mock--light">
+              <figcaption class="mock__caption"><span data-icon="sun"></span>GitHub light</figcaption>
+              <div class="mock__canvas">
+                <p class="mock__h1">your-project</p>
+                <p class="mock__badges"><img data-preview alt="" /></p>
+                <span class="mock__line"></span>
+                <span class="mock__line"></span>
+                <span class="mock__line"></span>
+              </div>
+            </figure>
+            <figure class="mock mock--dark">
+              <figcaption class="mock__caption"><span data-icon="moon"></span>GitHub dark</figcaption>
+              <div class="mock__canvas">
+                <p class="mock__h1">your-project</p>
+                <p class="mock__badges"><img data-preview alt="" /></p>
+                <span class="mock__line"></span>
+                <span class="mock__line"></span>
+                <span class="mock__line"></span>
+              </div>
+            </figure>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <p>
+        Badges are rendered by
+        <a href="https://shields.io/" target="_blank" rel="noopener noreferrer"
+          >shields.io<span class="visually-hidden"> (opens in a new tab)</span></a
+        >. Not affiliated with shields.io or GitHub.
+      </p>
+    </footer>
+
+    <noscript><p class="noscript">This tool needs JavaScript to build badges.</p></noscript>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

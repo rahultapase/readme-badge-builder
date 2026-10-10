@@ -1,0 +1,96 @@
+/*
+ * Design tokens. OKLCH throughout, light and dark via light-dark().
+ * Strategy: Restrained. The UI stays neutral so badge colors read true;
+ * olive (seed hue 110) marks actions and selection, vermilion appears only in the mark.
+ */
+:root {
+  color-scheme: light dark;
+
+  /* Surfaces */
+  --bg: light-dark(oklch(1 0 0), oklch(0.1 0 0));
+  --surface: light-dark(oklch(0.975 0.004 110), oklch(0.155 0.004 110));
+  --surface-hover: light-dark(oklch(0.955 0.006 110), oklch(0.19 0.005 110));
+  --field: light-dark(oklch(1 0 0), oklch(0.13 0.003 110));
+  --border: light-dark(oklch(0.9 0.006 110), oklch(0.27 0.006 110));
+  --border-strong: light-dark(oklch(0.62 0.012 110), oklch(0.52 0.01 110));
+  --grid: light-dark(oklch(0.935 0.005 110), oklch(0.195 0.005 110));
+  --grid-major: light-dark(oklch(0.885 0.008 110), oklch(0.25 0.006 110));
+
+  /* Text */
+  --ink: light-dark(oklch(0.21 0.012 110), oklch(0.95 0.005 110));
+  --muted: light-dark(oklch(0.47 0.012 110), oklch(0.72 0.01 110));
+
+  /* Brand */
+  --primary: light-dark(oklch(0.35 0.075 110), oklch(0.82 0.1 110));
+  --primary-hover: light-dark(oklch(0.29 0.07 110), oklch(0.88 0.09 110));
+  --on-primary: light-dark(oklch(0.99 0 0), oklch(0.16 0.02 110));
+  --accent: light-dark(oklch(0.55 0.18 36), oklch(0.72 0.15 38));
+  --on-accent: light-dark(oklch(0.99 0 0), oklch(0.16 0.02 38));
+
+  /* Feedback (always paired with an icon and text) */
+  --danger: light-dark(oklch(0.52 0.19 27), oklch(0.74 0.15 27));
+  --success: light-dark(oklch(0.5 0.12 150), oklch(0.78 0.13 150));
+  --on-success: light-dark(oklch(0.99 0 0), oklch(0.16 0.03 150));
+
+  /* GitHub README canvases (Primer values, fixed regardless of app theme) */
+  --gh-light-bg: #ffffff;
+  --gh-light-fg: #1f2328;
+  --gh-light-border: #d1d9e0;
+  --gh-light-line: #e3e7eb;
+  --gh-dark-bg: #0d1117;
+  --gh-dark-fg: #f0f6fc;
+  --gh-dark-border: #3d444d;
+  --gh-dark-line: #262c36;
+
+  /* Type */
+  --font-ui: 'Schibsted Grotesk Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'Martian Mono Variable', ui-monospace, 'Cascadia Code', monospace;
+  --font-github: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif;
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-md: 1.2rem;
+  --text-lg: 1.44rem;
+  --text-xl: 1.728rem;
+
+  /* Space (4px base) */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-12: 3rem;
+
+  /* Shape: controls use the badge's own small corner */
+  --radius-control: 4px;
+  --radius-panel: 10px;
+
+  /* Size */
+  --control-h: 2.5rem;
+  --topbar-h: 3.5rem;
+
+  /* Motion */
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --dur-press: 120ms;
+  --dur-fast: 160ms;
+  --dur-base: 200ms;
+
+  /* Layers */
+  --z-sticky: 10;
+  --z-skip: 100;
+}
+
+:root[data-theme='light'] {
+  color-scheme: light;
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+}
+
+@media (pointer: coarse) {
+  :root {
+    --control-h: 2.75rem;
+  }
+}

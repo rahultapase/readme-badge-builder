@@ -1,0 +1,25 @@
+# Local planning and agent files (never commit)
+plan.md
+PRODUCT.md
+DESIGN.md
+notes/
+.kiro/
+skills/
+.impeccable/
+
+# Dependencies and build output
+node_modules/
+dist/
+coverage/
+*.local
+
+# Logs
+*.log
+npm-debug.log*
+
+# Editor and OS
+.vscode/*
+!.vscode/extensions.json
+.idea/
+.DS_Store
+Thumbs.db
