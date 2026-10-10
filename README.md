@@ -77,6 +77,6 @@ Built with plain TypeScript and CSS: no UI framework, self-hosted fonts (Schibst
 
 ## About this project
 
-Built for the **Use GitHub Copilot to Build a Simple Application** challenge at [MLH Global Hack Week: Hacktoberfest](https://www.mlh.com/events/global-hack-week-open-source-90/challenges). The initial version was built with [Kiro](https://kiro.dev), an AI IDE.
+Built for the **Use GitHub Copilot to Build a Simple Application** challenge at [MLH Global Hack Week: Hacktoberfest](https://www.mlh.com/events/global-hack-week-open-source-90/challenges).
 
 Not affiliated with shields.io or GitHub.
